@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Synapse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              zen: {
+                bg: '#0c0a09',       // Warm Black
+                paper: '#1c1917',    // Stone-900
+                surface: '#292524',  // Stone-800
+                
+                border: '#44403c',   // Stone-700
+                input: '#1c1917',
+
+                heading: '#e7e5e4',  // Stone-200
+                body: '#b5b0ad',     // Stone-400
+                muted: '#78716c',    // Stone-500 (Adjusted for better subtle text)
+
+                accent: '#d97706',   // Amber-600
+                accentDim: 'rgba(217, 119, 6, 0.08)',
+                selection: '#451a03', 
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Lora', 'serif'],
+            },
+            transitionTimingFunction: {
+              'fluid': 'cubic-bezier(0.25, 1, 0.5, 1)', // The "Apple" curve - snappy start, long soft tail
+              'snappy': 'cubic-bezier(0.2, 0, 0, 1)',   // Instant response
+              'elastic': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)', // Bouncy
+            },
+            transitionDuration: {
+              '400': '400ms',
+              '600': '600ms',
+              '800': '800ms',
+              '1200': '1200ms', // For long fades
+            },
+            backgroundImage: {
+              'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.04%22/%3E%3C/svg%3E')",
+              'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+              'zen-fade': 'linear-gradient(to bottom, rgba(12, 10, 9, 0) 0%, rgba(12, 10, 9, 1) 100%)',
+            },
+            animation: {
+              'enter-slow': 'enter 0.6s cubic-bezier(0.2, 0.0, 0.2, 1) forwards',
+              'enter-fast': 'enter 0.3s cubic-bezier(0.2, 0.0, 0.2, 1) forwards',
+              'slide-up-fade': 'slideUpFade 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards',
+              'scale-in': 'scaleIn 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards',
+              'pulse-slow': 'pulse 4s ease-in-out infinite',
+              'float': 'float 8s ease-in-out infinite',
+            },
+            keyframes: {
+              enter: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideUpFade: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              scaleIn: {
+                '0%': { opacity: '0', transform: 'scale(0.95)' },
+                '100%': { opacity: '1', transform: 'scale(1)' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              }
+            },
+            boxShadow: {
+              'zen': '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+              'glow': '0 0 40px -10px rgba(217, 119, 6, 0.15)',
+              'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #0c0a09;
+        color: #b5b0ad;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        position: relative;
+        overflow: hidden; 
+      }
+      
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.035%22/%3E%3C/svg%3E');
+        opacity: 0.5;
+        z-index: 9999;
+        mix-blend-mode: overlay;
+      }
+      
+      /* Smooth Scrolling for lists */
+      .smooth-scroll {
+        scroll-behavior: smooth;
+      }
+
+      /* Zen Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #292524; 
+        border-radius: 10px;
+        border: 1px solid #0c0a09;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #57534e; 
+      }
+
+      ::selection {
+        background: rgba(217, 119, 6, 0.2);
+        color: #e7e5e4;
+      }
+      
+      /* Input reset for cleaner UI */
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover, 
+      input:-webkit-autofill:focus, 
+      textarea:-webkit-autofill,
+      textarea:-webkit-autofill:hover,
+      textarea:-webkit-autofill:focus,
+      select:-webkit-autofill,
+      select:-webkit-autofill:hover,
+      select:-webkit-autofill:focus {
+        -webkit-text-fill-color: #e7e5e4;
+        -webkit-box-shadow: 0 0 0px 1000px #0c0a09 inset;
+        transition: background-color 5000s ease-in-out 0s;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "d3": "https://aistudiocdn.com/d3@^7.9.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
